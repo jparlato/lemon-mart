@@ -1,3 +1,4 @@
+import { HttpClientModule } from '@angular/common/http'
 import { NgModule } from '@angular/core'
 import { FlexLayoutModule } from '@angular/flex-layout'
 import { MatButtonModule } from '@angular/material/button'
@@ -24,6 +25,7 @@ const matmodules = [MatToolbarModule, MatButtonModule, MatIconModule]
     AppRoutingModule,
     BrowserAnimationsModule,
     FlexLayoutModule,
+    HttpClientModule,
     matmodules,
     ManagerModule,
     InventoryModule,

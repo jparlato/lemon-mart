@@ -21,6 +21,7 @@ const matmodules = [MatToolbarModule, MatButtonModule, MatIconModule]
 @NgModule({
   declarations: [AppComponent, HomeComponent, PageNotFoundComponent],
   imports: [
+    ManagerModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,

@@ -15,6 +15,10 @@ const routes: Routes = [
     component: HomeComponent,
   },
   {
+    path: 'manager',
+    loadChildren: () => import('./manager/manager.module').then((m) => m.ManagerModule),
+  },
+  {
     path: '**',
     component: PageNotFoundComponent,
   },

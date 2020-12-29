@@ -4,7 +4,7 @@ import { RouterModule, Routes } from '@angular/router'
 import { ManagerHomeComponent } from './manager-home/manager-home.component'
 
 const routes: Routes = [
-  { path: '', redirectTo: '/manater/home', pathMatch: 'full' },
+  { path: '', redirectTo: '/manager/home', pathMatch: 'full' },
   { path: 'home', component: ManagerHomeComponent },
 ]
 

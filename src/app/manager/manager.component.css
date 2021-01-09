@@ -6,3 +6,8 @@ div[fixLayout] {
   font-weight: bold;
   border-bottom: 2px solid #005005;
 }
+
+.active {
+  color: #673ab7;
+  font-weight: bold !important;
+}

@@ -30,7 +30,7 @@ import { UserManagementComponent } from './user-management/user-management.compo
     AppMaterialModule,
     ManagerMaterialModule,
     FlexLayoutModule,
-    ManagerRoutingModule,
+    ManagerRoutingModule, // this is the routing module for manager
   ],
   schemas: [],
 })

@@ -5,7 +5,6 @@ import { ReactiveFormsModule } from '@angular/forms'
 import { SafeResourceUrl, SafeValue } from '@angular/platform-browser'
 import { NoopAnimationsModule } from '@angular/platform-browser/animations'
 import { RouterTestingModule } from '@angular/router/testing'
-import { autoSpyObj } from 'angular-unit-test-helper'
 import { Observable, Subscription, of } from 'rxjs'
 
 import { AppMaterialModule } from '../app-material.module'

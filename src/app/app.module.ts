@@ -1,18 +1,16 @@
 import { HttpClientModule } from '@angular/common/http'
 import { NgModule } from '@angular/core'
 import { FlexLayoutModule } from '@angular/flex-layout'
-import { MatIconModule } from '@angular/material/icon'
 import { BrowserModule } from '@angular/platform-browser'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 
 import { AppMaterialModule } from './app-material.module'
 import { AppRoutingModule } from './app-routing.module'
 import { AppComponent } from './app.component'
+import { AuthService } from './auth/auth.service'
+import { AuthInMemoryAuthService } from './auth/in-memory-auth/auth-in-memory-auth.service'
 import { HomeComponent } from './home/home.component'
-import { InventoryModule } from './inventory/inventory.module'
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component'
-import { PosModule } from './pos/pos.module'
-import { UserModule } from './user/user.module'
 
 // const matmodules = [MatToolbarModule,  MatButtonModule, MatIconModule]
 
@@ -26,10 +24,15 @@ import { UserModule } from './user/user.module'
     HttpClientModule,
     AppMaterialModule,
     // InventoryModule,
-    //PosModule,
+    // PosModule,
     // UserModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: AuthService,
+      useClass: AuthInMemoryAuthService,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

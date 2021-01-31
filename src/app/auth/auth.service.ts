@@ -15,7 +15,7 @@ export interface IAuthStatus {
   userId: string
 }
 
-export interface IServerAutResponse {
+export interface IServerAuthResponse {
   accessToken: string
 }
 
@@ -90,7 +90,7 @@ export abstract class AuthService extends CacheService implements IAuthService {
   protected abstract autProvider(
     email: string,
     password: string
-  ): Observable<IServerAutResponse>
+  ): Observable<IServerAuthResponse>
 
   protected setToken(jwt: string): void {
     this.setItem('jwt', jwt)

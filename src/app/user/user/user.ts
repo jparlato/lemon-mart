@@ -79,6 +79,7 @@ export class User implements IUser {
       user.phones
     )
   }
+
   public get fullName(): string {
     if (!this.name) {
       return ''

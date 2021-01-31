@@ -1,8 +1,12 @@
 import { Injectable } from '@angular/core'
-import { BehaviorSubject, Observable } from 'rxjs'
+import jwt_decode from 'jwt-decode'
+import { BehaviorSubject, Observable, throwError } from 'rxjs'
+import { catchError, filter, map, mergeMap, tap } from 'rxjs/operators'
 
+import { transformError } from '../common/common'
 import { IUser, User } from '../user/user/user'
 import { Role } from './auth.enum'
+import { CacheService } from './cache.service'
 import { IAuthService } from './interfaces/iauth-service'
 
 export interface IAuthStatus {
@@ -22,21 +26,65 @@ export const defaultAuthstatus: IAuthStatus = {
 }
 
 @Injectable()
-export abstract class AuthService implements IAuthService {
-  readonly authStatus$ = new BehaviorSubject<IAuthStatus>(defaultAuthstatus)
+export abstract class AuthService extends CacheService implements IAuthService {
+  // public
+
+  readonly authStatus$ = new BehaviorSubject<IAuthStatus>(
+    this.getItem('authStatus') ?? defaultAuthstatus
+  )
 
   currentUser$ = new BehaviorSubject<IUser>(new User())
 
-  constructor() {}
+  // protected
+
+  // private
+
+  constructor() {
+    super()
+    this.authStatus$.pipe(tap((authStatus) => this.setItem('authStatus', authStatus)))
+  }
+
+  // public methods
 
   login(email: string, password: string): Observable<void> {
-    throw new Error('Method not implemented.')
+    this.clearToken()
+
+    const loginResponse$ = this.autProvider(email, password).pipe(
+      map((value: { accessToken: any }) => {
+        this.setToken(value.accessToken) // set token in local storage
+        const token = jwt_decode(value.accessToken)
+        return this.transformJwtToken(token)
+      }),
+      tap((status: IAuthStatus) => this.authStatus$.next(status)),
+      filter((status: IAuthStatus) => status.isAuthenticated),
+      mergeMap(() => this.getCurrentUser()),
+      map((user) => this.currentUser$.next(user)),
+      catchError(transformError)
+    )
+
+    loginResponse$.subscribe({
+      error: (err) => {
+        this.logout()
+        return throwError(err)
+      },
+    })
+    return loginResponse$
   }
+
   logout(clearToken?: boolean): void {
-    throw new Error('Method not implemented.')
+    if (clearToken) {
+      this.clear()
+    }
+    setTimeout(() => this.authStatus$.next(defaultAuthstatus), 0)
   }
   getToken(): string {
-    throw new Error('Method not implemented.')
+    return this.getItem('jwt') ?? ''
+  }
+
+  // protected methods
+
+  protected clearToken(): void {
+    this.removeItem('jwt')
   }
 
   protected abstract autProvider(
@@ -44,7 +92,13 @@ export abstract class AuthService implements IAuthService {
     password: string
   ): Observable<IServerAutResponse>
 
+  protected setToken(jwt: string): void {
+    this.setItem('jwt', jwt)
+  }
+
   protected abstract transformJwtToken(token: unknown): IAuthStatus
 
   protected abstract getCurrentUser(): Observable<User>
+
+  // private methods
 }

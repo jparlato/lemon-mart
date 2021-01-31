@@ -45,7 +45,7 @@ export class AuthInMemoryAuthService extends AuthService {
     )
   }
 
-  protected autProvider(
+  protected authProvider(
     email: string,
     password: string
   ): Observable<IServerAuthResponse> {

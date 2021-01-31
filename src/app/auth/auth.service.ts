@@ -49,7 +49,7 @@ export abstract class AuthService extends CacheService implements IAuthService {
   login(email: string, password: string): Observable<void> {
     this.clearToken()
 
-    const loginResponse$ = this.autProvider(email, password).pipe(
+    const loginResponse$ = this.authProvider(email, password).pipe(
       map((value: { accessToken: any }) => {
         this.setToken(value.accessToken) // set token in local storage
         const token = jwt_decode(value.accessToken)
@@ -87,7 +87,7 @@ export abstract class AuthService extends CacheService implements IAuthService {
     this.removeItem('jwt')
   }
 
-  protected abstract autProvider(
+  protected abstract authProvider(
     email: string,
     password: string
   ): Observable<IServerAuthResponse>

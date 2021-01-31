@@ -41,21 +41,21 @@ export interface IUser {
 export class User implements IUser {
   constructor(
     // tslint:disable-next-line: variable-name
-    public _id: string = '',
-    public email: string = '',
-    public name: IName = { first: '', middle: '', last: '' } as IName,
-    public picture: string = '',
-    public role: Role = Role.None,
+    public _id = '',
+    public email = '',
+    public name = { first: '', middle: '', last: '' } as IName,
+    public picture = '',
+    public role = Role.None,
     public dateOfBirth: Date | null = null,
-    public userStatus: boolean = false,
-    public level: number = 0,
-    public address: any = {
+    public userStatus = false,
+    public level = 0,
+    public address = {
       line1: '',
       city: '',
       state: '',
       zip: '',
     },
-    public phones: IPhone[]
+    public phones: IPhone[] = []
   ) {}
 
   static Build(user: IUser): IUser {

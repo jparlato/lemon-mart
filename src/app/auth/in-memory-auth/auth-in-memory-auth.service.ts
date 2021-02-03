@@ -49,6 +49,8 @@ export class AuthInMemoryAuthService extends AuthService {
     email: string,
     password: string
   ): Observable<IServerAuthResponse> {
+    const expireDate = new Date()
+    expireDate.setHours(expireDate.getHours() + 1)
     email = email.toLowerCase()
     if (!email.endsWith('@test.com')) {
       return throwError('Failed to login!  Email needs to end with @test.com.')
@@ -56,6 +58,7 @@ export class AuthInMemoryAuthService extends AuthService {
     const authStatus = {
       isAuthenticated: true,
       userId: this.defaultUser._id,
+      expires: new Date(new Date().getTime() + 60 * 60 * 1000),
       userRole: email.includes('cashier')
         ? Role.Cashier
         : email.includes('clerk')

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core'
 import jwt_decode from 'jwt-decode'
-import { BehaviorSubject, Observable, throwError } from 'rxjs'
+import { BehaviorSubject, Observable, pipe, throwError } from 'rxjs'
 import { catchError, filter, map, mergeMap, tap } from 'rxjs/operators'
 
 import { transformError } from '../common/common'
@@ -40,6 +40,18 @@ export abstract class AuthService extends CacheService implements IAuthService {
   // protected
 
   // private
+  private getAndUpdateUserIfAuthenticated = pipe(
+    filter((status: IAuthStatus) => status.isAuthenticated),
+    mergeMap(() => this.getCurrentUser()),
+    map((user: IUser) => {
+      return this.currentUser$.next(user)
+    }),
+    catchError(transformError)
+  )
+
+  protected readonly resumeCurrentUser$ = this.authStatus$.pipe(
+    this.getAndUpdateUserIfAuthenticated
+  )
 
   constructor() {
     super()
@@ -47,6 +59,10 @@ export abstract class AuthService extends CacheService implements IAuthService {
       this.logout(true)
     } else {
       this.authStatus$.next(this.getAuthStatusFromToken())
+      // to load a user on browser refresh,
+      // resume pipeline must activate on the next cycle
+      // which allows for all services to construct properly
+      setTimeout(() => this.resumeCurrentUser$.subscribe(), 0)
     }
     // this.authStatus$.pipe(tap((authStatus) => this.setItem('authStatus', authStatus)))
   }
@@ -62,13 +78,8 @@ export abstract class AuthService extends CacheService implements IAuthService {
         const token = jwt_decode(value.accessToken)
         return this.transformJwtToken(token)
       }),
-      tap(() => {
-        this.authStatus$.next(this.getAuthStatusFromToken())
-      }),
-      filter((status: IAuthStatus) => status.isAuthenticated),
-      mergeMap(() => this.getCurrentUser()),
-      map((user) => this.currentUser$.next(user)),
-      catchError(transformError)
+      tap((status) => this.authStatus$.next(status)),
+      this.getAndUpdateUserIfAuthenticated
     )
 
     loginResponse$.subscribe({

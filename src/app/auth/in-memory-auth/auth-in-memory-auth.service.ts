@@ -59,6 +59,7 @@ export class AuthInMemoryAuthService extends AuthService {
       isAuthenticated: true,
       userId: this.defaultUser._id,
       expires: new Date(new Date().getTime() + 60 * 60 * 1000),
+      exp: Math.floor(Date.now() / 1000) + 60 * 60,
       userRole: email.includes('cashier')
         ? Role.Cashier
         : email.includes('clerk')
@@ -72,7 +73,8 @@ export class AuthInMemoryAuthService extends AuthService {
 
     const authResponse = {
       accessToken: sign(authStatus, 'secret', {
-        expiresIn: '1h',
+        exp: Math.floor(Date.now() / 1000) + 5 * 1,
+        expiresIn: '5s',
         algorithm: 'none',
       }),
     } as IServerAuthResponse

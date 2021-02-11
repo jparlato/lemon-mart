@@ -1,6 +1,13 @@
-<div fxLayout="column" fxLayoutAlign="center center">
+<!-- <div fxLayout="column" fxLayoutAlign="center center">
   <span class="mat-display-2">Hello, Limoncu!</span>
-  <!-- <button routerLink="/manager" mat-raised-button coloer="primary">login as manager -->
+   <button routerLink="/manager" mat-raised-button coloer="primary">login as manager
   <button (click)="login()" mat-raised-button color="primary">login as manager
   </button>
+</div> -->
+
+<div *ngIf="displayLogin">
+  <app-login></app-login>
+</div>
+<div *ngIf="!displayLogin">
+  <span class="mat-display-3">You ge a lemon, you get a lemon, you get a lemon ...</span>
 </div>

@@ -11,6 +11,8 @@ import { AuthService } from '../auth/auth.service'
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit {
+  displayLogin = true;
+
   constructor(private authervice: AuthService, private router: Router) {}
 
   ngOnInit(): void {}
@@ -30,17 +32,17 @@ to produce a count of each and an overall total, or a calculation of BMI from th
 
   */
 
-  login(): void {
-    this.authervice.login('manager@test.com', '12345678')
-    combineLatest([this.authervice.authStatus$, this.authervice.currentUser$])
-      .pipe(
-        filter(([authstatus, user]) => authstatus.isAuthenticated && user?._id !== ''),
-        tap(([authStatus, user]) => {
-          console.log(authStatus.isAuthenticated)
-          console.log(user?._id)
-          this.router.navigate(['/manager'])
-        })
-      )
-      .subscribe()
-  }
+  // login(): void {
+  //   this.authervice.login('manager@test.com', '12345678')
+  //   combineLatest([this.authervice.authStatus$, this.authervice.currentUser$])
+  //     .pipe(
+  //       filter(([authstatus, user]) => authstatus.isAuthenticated && user?._id !== ''),
+  //       tap(([authStatus, user]) => {
+  //         console.log(authStatus.isAuthenticated)
+  //         console.log(user?._id)
+  //         this.router.navigate(['/manager'])
+  //       })
+  //     )
+  //     .subscribe()
+  // }
 }

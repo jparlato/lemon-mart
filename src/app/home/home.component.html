@@ -4,10 +4,20 @@
   <button (click)="login()" mat-raised-button color="primary">login as manager
   </button>
 </div> -->
+<div *ngIf="(authService.authStatus$ | async)?.isAuthenticated; else doLogin">
+  <div>
+    This is LemonMart! The place where
+  </div>
+  <div>
+    <span class="mat-display-1">You ge a lemon, you get a lemon, you get a lemon
+      ...</span>
+  </div>
+  <div>
+    everyone gets a Lemon
+  </div>
 
-<div *ngIf="displayLogin">
+</div>
+
+<ng-template #doLogin>
   <app-login></app-login>
-</div>
-<div *ngIf="!displayLogin">
-  <span class="mat-display-3">You ge a lemon, you get a lemon, you get a lemon ...</span>
-</div>
+</ng-template>

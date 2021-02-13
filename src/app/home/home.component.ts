@@ -11,9 +11,9 @@ import { AuthService } from '../auth/auth.service'
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit {
-  displayLogin = true;
+  displayLogin = true
 
-  constructor(private authervice: AuthService, private router: Router) {}
+  constructor(public authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {}
 

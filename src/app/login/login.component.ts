@@ -16,6 +16,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   loginForm!: FormGroup
   loginError = ''
   redirectUrl = ''
+  loginFailed = false
 
   constructor(
     private formBuilder: FormBuilder,
@@ -40,6 +41,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   async login(submittedForm: FormGroup): Promise<void> {
+    this.loginFailed = true
     this.authService
       .login(submittedForm.value.email, submittedForm.value.password)
       .pipe(catchError((err) => (this.loginError = err)))
@@ -50,6 +52,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       .pipe(
         filter(([authStatus, user]) => authStatus.isAuthenticated && user?._id !== ''),
         tap(([authStatus, user]) => {
+          this.loginFailed = false
           this.router.navigate([this.redirectUrl || '/manager'])
         })
       )

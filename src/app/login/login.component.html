@@ -45,6 +45,9 @@
             </mat-error>
           </mat-form-field>
         </div>
+        <div *ngIf="loginFailed">
+          Please Login...
+        </div>
         <div fxLayout="row" class="margin-top">
           <div *ngIf="loginError" class="mat-caption error{{loginError}}">
             <div class="flex-spacer"></div>

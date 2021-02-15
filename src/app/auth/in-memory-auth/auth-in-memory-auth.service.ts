@@ -22,6 +22,7 @@ export class AuthInMemoryAuthService extends AuthService {
     role: Role.Manager,
     dateOfBirth: new Date(1980, 1, 1),
     userStatus: true,
+    fullName: 'Doguhan Ulca',
     address: {
       line1: '101 Sesame St.',
       city: 'Bethesda',

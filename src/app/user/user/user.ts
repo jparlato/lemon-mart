@@ -28,6 +28,7 @@ export interface IUser {
   userStatus: boolean
   dateOfBirth: Date | null | string
   level: number
+  fullName: string
   address: {
     line1: string
     line2?: string

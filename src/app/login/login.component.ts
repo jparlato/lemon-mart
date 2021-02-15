@@ -1,10 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core'
-import { FormBuilder, FormGroup, Validators } from '@angular/forms'
+import { FormBuilder, FormGroup } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import { combineLatest } from 'rxjs'
 import { catchError, filter, tap } from 'rxjs/operators'
 import { AuthService } from 'src/app/auth/auth.service'
 import { SubSink } from 'subsink'
+
+import { UiService } from './../common/services/ui.service'
+import { EmailValidation, PasswordValidation } from './../common/validations'
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -22,7 +26,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private uiService: UiService
   ) {}
 
   ngOnInit(): void {
@@ -32,11 +37,8 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   buildLoginForm(): void {
     this.loginForm = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: [
-        '',
-        [Validators.required, Validators.minLength(8), Validators.maxLength(50)],
-      ],
+      email: ['', EmailValidation],
+      password: ['', PasswordValidation],
     })
   }
 
@@ -53,6 +55,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         filter(([authStatus, user]) => authStatus.isAuthenticated && user?._id !== ''),
         tap(([authStatus, user]) => {
           this.loginFailed = false
+          this.uiService.showToast(`Welcome ${user.fullName}! Role: ${user.role}`)
           this.router.navigate([this.redirectUrl || '/manager'])
         })
       )

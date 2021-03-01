@@ -1,3 +1,5 @@
+// prettier-ignore
+`
 <mat-toolbar *ngIf='{ status: authService.authStatus$ | async,
   user: authService.currentUser$ | async
 } as auth;' fxLayoutGap=" 8px" color="primary">
@@ -27,4 +29,12 @@
     <mat-icon>lock_open</mat-icon>
   </button>
 </mat-toolbar>
-<router-outlet></router-outlet>
+<mat-sidenav-container class="app-sidenav-container">
+  <mat-sidenav #sidenav [mode]="media.isActive('xs') ? 'over' : 'side'"
+    [fixedInViewport]="media.isActive('xs')" fixedTopGap="56" [(opened)]="opened">
+    <app-navigation-menu></app-navigation-menu>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

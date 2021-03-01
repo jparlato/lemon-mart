@@ -1,0 +1,31 @@
+<mat-nav-list>
+
+
+  <h3 matSubHeader>Manager</h3>
+  <a mat-list-item routerLinkActive="active-link" routerLink="/manager/users">
+    users
+  </a>
+
+  <a mat-list-item routerLinkActive="active-link" routerLink="/manager/receipts">
+    Receipts
+  </a>
+
+  <h3 matSubHeader>Inventory</h3>
+
+  <a mat-list-item routerLinkActive="active-link" routerLink="/inventory/stockEntry">
+    Stock Entry
+  </a>
+  <a mat-list-item routerLinkActive="active-link"
+    routerLink="/manager/inventory/Products">
+    Products
+  </a>
+  <a mat-list-item routerLinkActive="active-link"
+    routerLink="/manager/inventory/Categories">
+    Categories
+  </a>
+  <h3 matSubHeader>Clerk</h3>
+
+  <a mat-list-item routerLinkActive="active-link" routerLink="/pos">
+    POS
+  </a>
+</mat-nav-list>
